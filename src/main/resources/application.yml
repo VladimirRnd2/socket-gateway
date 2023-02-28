@@ -1,0 +1,25 @@
+server:
+  port: 9000
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+      routes:
+        - id: socket_server
+          uri: lb://socket
+          predicates:
+            - Method=GET,POST,PUT
+            - Path=/**
+        - id: websocket_server
+          uri: lb://socket
+          predicates:
+            - Path=/chat/**
+eureka:
+  client:
+    service-url:
+      defaultZone: http://192.168.2.40:8761/eureka
